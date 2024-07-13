@@ -3,7 +3,16 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase : {
+    apiKey: "AIzaSyB50MVlgeBhk4OBACKG3PVpqnTjo9g7WLI",
+    authDomain: "fire-kreedo-rapid.firebaseapp.com",
+    projectId: "fire-kreedo-rapid",
+    storageBucket: "fire-kreedo-rapid.appspot.com",
+    messagingSenderId: "944559689211",
+    appId: "1:944559689211:web:af48e55abe55f33bde8f5e",
+    measurementId: "G-C9N7WG63SM"
+  }
 };
 
 /*
