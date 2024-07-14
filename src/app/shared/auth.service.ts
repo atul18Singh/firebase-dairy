@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private fireauth: AngularFireAuth, private router: Router) {}
+  constructor(private fireauth: AngularFireAuth, private router: Router) { }
 
   // login
 
@@ -15,6 +15,7 @@ export class AuthService {
       () => {
         localStorage.setItem('token', 'true');
         this.router.navigate(['./dashboard']);
+        this.isLoggedIn();
       },
       (err) => {
         alert('Something went worng');
@@ -39,6 +40,11 @@ export class AuthService {
     );
   }
 
+  isLoggedIn(): boolean {
+    // Check if user is logged in (e.g., check for token existence, session, etc.)
+    return true; // Replace with actual authentication logic
+  }
+
   /**
    * @description logout
    */
@@ -47,7 +53,7 @@ export class AuthService {
       localStorage.removeItem('token');
       this.router.navigate(['/login']);
     }, err => {
-        alert(err.message)
+      alert(err.message)
     });
   }
 }

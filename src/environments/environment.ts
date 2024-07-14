@@ -5,13 +5,12 @@
 export const environment = {
   production: false,
   firebase : {
-    apiKey: "AIzaSyB50MVlgeBhk4OBACKG3PVpqnTjo9g7WLI",
-    authDomain: "fire-kreedo-rapid.firebaseapp.com",
-    projectId: "fire-kreedo-rapid",
-    storageBucket: "fire-kreedo-rapid.appspot.com",
-    messagingSenderId: "944559689211",
-    appId: "1:944559689211:web:af48e55abe55f33bde8f5e",
-    measurementId: "G-C9N7WG63SM"
+    apiKey: "AIzaSyBXvSJXJ1KzJ30l7w-x9oFfsBgLo-V6Kl0",
+    authDomain: "dairy-management-system-ffc7c.firebaseapp.com",
+    projectId: "dairy-management-system-ffc7c",
+    storageBucket: "dairy-management-system-ffc7c.appspot.com",
+    messagingSenderId: "278834763847",
+    appId: "1:278834763847:web:cebd8dcbb111198f9c7962"
   }
 };
 
