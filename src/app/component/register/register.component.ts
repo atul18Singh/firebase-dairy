@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/shared/auth.service';
 export class RegisterComponent implements OnInit {
   email: string = '';
   password: string = '';
+  name: string = ''
 
   constructor(
     private auth: AuthService
