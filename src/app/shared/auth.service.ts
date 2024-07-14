@@ -11,11 +11,10 @@ export class AuthService {
   // login
 
   login(email: string, password: string) {
-    this.fireauth.signInWithEmailAndPassword(email, password).then(
-      () => {
+    this.fireauth.signInWithEmailAndPassword(email, password).then(() => {
         localStorage.setItem('token', 'true');
-        this.router.navigate(['./dashboard']);
         this.isLoggedIn();
+        this.router.navigate(['./dashboard']);
       },
       (err) => {
         alert('Something went worng');
@@ -55,5 +54,16 @@ export class AuthService {
     }, err => {
       alert(err.message)
     });
+  }
+
+  /**
+   * @description forgot password
+   */
+  forgotPassword(email: string) {
+    this.fireauth.sendPasswordResetEmail(email).then(() => {
+      this.router.navigate(['/verify-email']);
+    }, err => {
+      alert("Something went worng");
+    })
   }
 }
