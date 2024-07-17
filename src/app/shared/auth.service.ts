@@ -13,33 +13,33 @@ export class AuthService {
   // login
 
   login(email: string, password: string) {
-    this.fireauth.signInWithEmailAndPassword(email, password).then(() => {
-      localStorage.setItem('token', 'true');
-      console.log(localStorage.getItem('token'))
-      this.isLoggedIn();
-      this.router.navigate(['./dashboard']);
-    },
-      (err) => {
-        alert('Something went worng');
-        this.router.navigate(['./login']);
-      }
-    );
+    // this.fireauth.signInWithEmailAndPassword(email, password).then(() => {
+    //   localStorage.setItem('token', 'true');
+    //   console.log(localStorage.getItem('token'))
+    //   this.isLoggedIn();
+    //   this.router.navigate(['./dashboard']);
+    // },
+    //   (err) => {
+    //     alert('Something went worng');
+    //     this.router.navigate(['./login']);
+    //   }
+    // );
   }
 
   /**
    * @description register
    */
   register(email: string, password: string) {
-    this.fireauth.createUserWithEmailAndPassword(email, password).then((res: any) => {
-      alert('Registration has been successful');
-      this.router.navigate(['/login']);
-      this.sendEmailForVarification(res.user)
-    },
-      (err) => {
-        alert(err.message);
-        this.router.navigate(['/register']);
-      }
-    );
+    // this.fireauth.createUserWithEmailAndPassword(email, password).then((res: any) => {
+    //   alert('Registration has been successful');
+    //   this.router.navigate(['/login']);
+    //   this.sendEmailForVarification(res.user)
+    // },
+    //   (err) => {
+    //     alert(err.message);
+    //     this.router.navigate(['/register']);
+    //   }
+    // );
   }
 
   /**
