@@ -9,8 +9,14 @@ export class AuthService {
   constructor(
     private fireAuth: AngularFireAuth,
     private router: Router
-  ) {}
+  ) { }
 
+  /**
+   * @description login related logic
+   * @param email
+   * @param password
+   * @returns
+   */
   login(email: string, password: string): Promise<void> {
     return this.fireAuth.signInWithEmailAndPassword(email, password)
       .then(() => {
@@ -24,23 +30,37 @@ export class AuthService {
       });
   }
 
-  register(email: string, password: string): Promise<void> {
-    return this.fireAuth.createUserWithEmailAndPassword(email, password)
-      .then((res) => {
-        alert('Registration successful');
-        this.router.navigate(['login']);
-        this.sendVerificationEmail(res.user);
-      })
-      .catch((error) => {
-        alert('Registration failed: ' + error.message);
-        this.router.navigate(['register']);
-      });
+  /**
+   * @description register related logic
+   * @param email
+   * @param password
+   * @returns
+   */
+  async register(email: string, password: string): Promise<void> {
+    try {
+      const res = await this.fireAuth.createUserWithEmailAndPassword(email, password);
+      alert('Registration successful');
+      this.router.navigate(['login']);
+      this.sendVerificationEmail(res.user);
+      await this.sendVerificationEmail(res.user);
+    } catch (error: any) {
+      alert('Registration failed: ' + error.message);
+      this.router.navigate(['register']);
+    }
   }
 
+  /**
+   * @description authgard
+   * @returns
+   */
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
   }
 
+  /**
+   * @description logut
+   * @returns
+   */
   logout(): Promise<void> {
     return this.fireAuth.signOut()
       .then(() => {
@@ -52,6 +72,11 @@ export class AuthService {
       });
   }
 
+  /**
+   * @description forgot password
+   * @param email
+   * @returns
+   */
   forgotPassword(email: string): Promise<void> {
     return this.fireAuth.sendPasswordResetEmail(email)
       .then(() => {
@@ -62,6 +87,11 @@ export class AuthService {
       });
   }
 
+  /**
+   * @description send email vrification
+   * @param user
+   * @returns
+   */
   private sendVerificationEmail(user: any): Promise<void> {
     return user.sendEmailVerification()
       .then(() => {
