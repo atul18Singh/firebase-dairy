@@ -17,11 +17,11 @@ export class AuthService {
       localStorage.setItem('token', 'true');
       console.log(localStorage.getItem('token'))
       this.isLoggedIn();
-      this.router.navigate(['./dashboard']);
+      this.router.navigate(['dashboard']);
     },
       (err) => {
         alert('Something went worng');
-        this.router.navigate(['./login']);
+        this.router.navigate(['login']);
       }
     );
   }
@@ -32,12 +32,12 @@ export class AuthService {
   register(email: string, password: string) {
     this.fireauth.createUserWithEmailAndPassword(email, password).then((res: any) => {
       alert('Registration has been successful');
-      this.router.navigate(['/login']);
+      this.router.navigate(['login']);
       this.sendEmailForVarification(res.user)
     },
       (err) => {
         alert(err.message);
-        this.router.navigate(['/register']);
+        this.router.navigate(['register']);
       }
     );
   }
@@ -59,7 +59,7 @@ export class AuthService {
   logout() {
     this.fireauth.signOut().then(() => {
       localStorage.removeItem('token');
-      this.router.navigate(['/login']);
+      this.router.navigate(['login']);
     }, err => {
       alert(err.message)
     });
@@ -70,7 +70,7 @@ export class AuthService {
    */
   forgotPassword(email: string) {
     this.fireauth.sendPasswordResetEmail(email).then(() => {
-      this.router.navigate(['/verify-email']);
+      this.router.navigate(['verify-email']);
     }, err => {
       alert("Something went worng");
     })
@@ -78,7 +78,7 @@ export class AuthService {
 
   sendEmailForVarification(user: any) {
     user.sendEmailForVarification().then((res: any) => {
-      this.router.navigate(['/verify-email']);
+      this.router.navigate(['verify-email']);
     }, (err: any) => {
       alert('Not able you send you register email address')
     })
