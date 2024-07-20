@@ -10,22 +10,26 @@ export class LoginComponent implements OnInit {
   email: string = '';
   password: string = '';
 
-  constructor(
-    private auth: AuthService
-  ) { }
+  constructor(private auth: AuthService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  login() {
-    if (this.email == '') {
-      alert('Please enter valid email');
-      return
+  login(): void {
+    if (!this.email) {
+      alert('Please enter a valid email');
+      return;
     }
 
-    this.auth.login(this.email, this.password);
+    this.auth.login(this.email, this.password)
+      .then(() => {
+        // Handle success if needed
+      })
+      .catch((error) => {
+        // Handle error if needed
+        console.error('Login error:', error);
+      });
+
     this.email = '';
     this.password = '';
   }
-
 }
