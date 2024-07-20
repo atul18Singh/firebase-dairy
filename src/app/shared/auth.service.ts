@@ -7,80 +7,68 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   constructor(
-    private fireauth: AngularFireAuth,
-    private router: Router) { }
+    private fireAuth: AngularFireAuth,
+    private router: Router
+  ) {}
 
-  // login
-
-  login(email: string, password: string) {
-    this.fireauth.signInWithEmailAndPassword(email, password).then(() => {
-      localStorage.setItem('token', 'true');
-      console.log(localStorage.getItem('token'))
-      this.isLoggedIn();
-      this.router.navigate(['dashboard']);
-    },
-      (err) => {
-        alert('Something went worng');
+  login(email: string, password: string): Promise<void> {
+    return this.fireAuth.signInWithEmailAndPassword(email, password)
+      .then(() => {
+        localStorage.setItem('token', 'true');
+        console.log(localStorage.getItem('token'));
+        this.router.navigate(['dashboard']);
+      })
+      .catch((error) => {
+        alert('Login failed: ' + error.message);
         this.router.navigate(['login']);
-      }
-    );
+      });
   }
 
-  /**
-   * @description register
-   */
-  register(email: string, password: string) {
-    this.fireauth.createUserWithEmailAndPassword(email, password).then((res: any) => {
-      alert('Registration has been successful');
-      this.router.navigate(['login']);
-      this.sendEmailForVarification(res.user)
-    },
-      (err) => {
-        alert(err.message);
+  register(email: string, password: string): Promise<void> {
+    return this.fireAuth.createUserWithEmailAndPassword(email, password)
+      .then((res) => {
+        alert('Registration successful');
+        this.router.navigate(['login']);
+        this.sendVerificationEmail(res.user);
+      })
+      .catch((error) => {
+        alert('Registration failed: ' + error.message);
         this.router.navigate(['register']);
-      }
-    );
+      });
   }
 
-  /**
-   *
-   * @returns auth gard
-   */
-  isLoggedIn() {
-    if (localStorage.getItem('token')) {
-      return true;
-    }
-    return false
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
   }
 
-  /**
-   * @description logout
-   */
-  logout() {
-    this.fireauth.signOut().then(() => {
-      localStorage.removeItem('token');
-      this.router.navigate(['login']);
-    }, err => {
-      alert(err.message)
-    });
+  logout(): Promise<void> {
+    return this.fireAuth.signOut()
+      .then(() => {
+        localStorage.removeItem('token');
+        this.router.navigate(['login']);
+      })
+      .catch((error) => {
+        alert('Logout failed: ' + error.message);
+      });
   }
 
-  /**
-   * @description forgot password
-   */
-  forgotPassword(email: string) {
-    this.fireauth.sendPasswordResetEmail(email).then(() => {
-      this.router.navigate(['verify-email']);
-    }, err => {
-      alert("Something went worng");
-    })
+  forgotPassword(email: string): Promise<void> {
+    return this.fireAuth.sendPasswordResetEmail(email)
+      .then(() => {
+        this.router.navigate(['verify-email']);
+      })
+      .catch((error) => {
+        alert('Forgot password failed: ' + error.message);
+      });
   }
 
-  sendEmailForVarification(user: any) {
-    user.sendEmailForVarification().then((res: any) => {
-      this.router.navigate(['verify-email']);
-    }, (err: any) => {
-      alert('Not able you send you register email address')
-    })
+  private sendVerificationEmail(user: any): Promise<void> {
+    return user.sendEmailVerification()
+      .then(() => {
+        this.router.navigate(['verify-email']);
+      })
+      .catch((error: any) => {
+        alert('Failed to send verification email: ' + error.message);
+      });
   }
 }
