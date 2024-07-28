@@ -15,26 +15,24 @@ export class AuthService {
    * @description login related logic
    * @param email
    * @param password
-   * @returns
    */
-  login(email: string, password: string): Promise<void> {
-    return this.fireAuth.signInWithEmailAndPassword(email, password)
-      .then(() => {
-        localStorage.setItem('token', 'true');
-        console.log(localStorage.getItem('token'));
-        this.router.navigate(['dashboard']);
-      })
-      .catch((error) => {
-        alert('Login failed: ' + error.message);
-        this.router.navigate(['login']);
-      });
+  async login(email: string, password: string): Promise<void> {
+    try {
+      await this.fireAuth.signInWithEmailAndPassword(email, password)
+      localStorage.setItem('token', 'true');
+      console.log(localStorage.getItem('token'));
+      this.router.navigate(['dashboard']);
+    }
+    catch (error: any) {
+      alert('Login failed: ' + error.message);
+      this.router.navigate(['login']);
+    };
   }
 
   /**
    * @description register related logic
    * @param email
    * @param password
-   * @returns
    */
   async register(email: string, password: string): Promise<void> {
     try {
