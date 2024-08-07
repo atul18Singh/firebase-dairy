@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
+import { FirebaseError } from 'firebase/app';
 
 @Injectable({
   providedIn: 'root',
@@ -13,51 +14,53 @@ export class AuthService {
 
   /**
    * @description login related logic
-   * @param email
-   * @param password
+   * @param emailAddress
+   * @param passwordCredential
    */
-  async login(email: string, password: string): Promise<void> {
+  async login(emailAddress: string, passwordCredential: string): Promise<void> {
     try {
       console.log('Attempting to sign in');
-      await this.fireAuth.signInWithEmailAndPassword(email, password);
+      await this.fireAuth.signInWithEmailAndPassword(emailAddress, passwordCredential);
       console.log('Sign in successful');
       localStorage.setItem('token', 'true');
       this.router.navigate(['dashboard']);
-    } catch (error: any) {
-      console.error('Login failed', error);
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        console.error('Login failed:', error.message);
+      }
       this.router.navigate(['login']);
     }
   }
 
-
   /**
    * @description register related logic
-   * @param email
-   * @param password
+   * @param emailAddress
+   * @param passwordCredential
    */
-  async register(email: string, password: string): Promise<void> {
+  async register(emailAddress: string, passwordCredential: string): Promise<void> {
     try {
-      const res = await this.fireAuth.createUserWithEmailAndPassword(email, password);
+      const res = await this.fireAuth.createUserWithEmailAndPassword(emailAddress, passwordCredential);
       alert('Registration successful');
       this.router.navigate(['login']);
-      this.sendVerificationEmail(res.user);
-      await this.sendVerificationEmail(res.user);
-    } catch (error: any) {
-      alert('Registration failed: ' + error.message);
+      await this.sendEmailVerificationLink(res.user);
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        console.error('Login failed:', error.message);
+      }
       this.router.navigate(['register']);
     }
   }
 
   /**
-   * @description authgard
+   * @description auth guard
    * @returns
    */
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    return localStorage.getItem('token') !== null;
   }
 
   /**
-   * @description logut
+   * @description logout
    * @returns
    */
   logout(): Promise<void> {
@@ -66,37 +69,37 @@ export class AuthService {
         localStorage.removeItem('token');
         this.router.navigate(['login']);
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         alert('Logout failed: ' + error.message);
       });
   }
 
   /**
    * @description forgot password
-   * @param email
+   * @param emailAddress
    * @returns
    */
-  forgotPassword(email: string): Promise<void> {
-    return this.fireAuth.sendPasswordResetEmail(email)
+  forgotPassword(emailAddress: string): Promise<void> {
+    return this.fireAuth.sendPasswordResetEmail(emailAddress)
       .then(() => {
         this.router.navigate(['verify-email']);
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         alert('Forgot password failed: ' + error.message);
       });
   }
 
   /**
-   * @description send email vrification
+   * @description send email verification link
    * @param user
    * @returns
    */
-  private sendVerificationEmail(user: any): Promise<void> {
+  private sendEmailVerificationLink(user: any): Promise<void> {
     return user.sendEmailVerification()
       .then(() => {
         this.router.navigate(['verify-email']);
       })
-      .catch((error: any) => {
+      .catch((error: Error) => {
         alert('Failed to send verification email: ' + error.message);
       });
   }
