@@ -45,7 +45,7 @@ export class AuthService {
       await this.sendEmailVerificationLink(res.user);
     } catch (error) {
       if (error instanceof FirebaseError) {
-        console.error('Login failed:', error.message);
+        console.error('Registration failed:', error.message);
       }
       this.router.navigate(['register']);
     }
@@ -94,13 +94,12 @@ export class AuthService {
    * @param user
    * @returns
    */
-  private sendEmailVerificationLink(user: any): Promise<void> {
-    return user.sendEmailVerification()
-      .then(() => {
-        this.router.navigate(['verify-email']);
-      })
-      .catch((error: Error) => {
-        alert('Failed to send verification email: ' + error.message);
-      });
+  private async sendEmailVerificationLink(user: any): Promise<void> {
+    try {
+      await user.sendEmailVerification();
+      this.router.navigate(['verify-email']);
+    } catch (error: any) {
+      alert('Failed to send verification email: ' + error.message);
+    }
   }
 }
