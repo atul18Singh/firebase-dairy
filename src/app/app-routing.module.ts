@@ -11,7 +11,8 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
     path: 'dashboard',
-    loadChildren: () => import('../app/dashboard/dashboard.module').then((res) => res.DashboardModule), canActivate: [AuthGuard],
+    loadChildren: () => import('./dashboard/dashboard.module').then((m) => m.DashboardModule), // Updated module import syntax
+    canActivate: [AuthGuard],
   },
   { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
@@ -19,7 +20,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: false })], // Added configuration options
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
