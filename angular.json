@@ -73,10 +73,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "firebase-dairy:build:production"
+              "buildTarget": "firebase-dairy:build:production"
             },
             "development": {
-              "browserTarget": "firebase-dairy:build:development"
+              "buildTarget": "firebase-dairy:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -84,7 +84,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "firebase-dairy:build"
+            "buildTarget": "firebase-dairy:build"
           }
         },
         "test": {
