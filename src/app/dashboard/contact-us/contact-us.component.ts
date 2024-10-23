@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { MovieService } from 'src/services/movie.service';
 
 @Component({
   selector: 'app-contact-us',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContactUsComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    private userService: MovieService
+  ) { }
 
   ngOnInit(): void {
+    this.userService.exclusive.next(true)
+    console.log(this.userService.exclusive.next(true))
   }
+
 
 }

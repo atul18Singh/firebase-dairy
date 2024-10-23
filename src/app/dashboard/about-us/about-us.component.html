@@ -1,1 +1,8 @@
-<p>about-us works!</p>
+<div *ngFor="let item of users">
+        <table>
+            <tr>
+                <td style="padding: 20px;">{{item?.id}}</td>
+                <td>{{item?.title}}</td>
+            </tr>
+        </table>
+</div>

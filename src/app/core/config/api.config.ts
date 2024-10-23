@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'https://jsonplaceholder.typicode.com/users';
+  private apiUrl = 'https://jsonplaceholder.typicode.com/posts';
   private token = 'YOUR_API_TOKEN_HERE'; // Replace with your actual API token
 
   constructor(private http: HttpClient) { }
